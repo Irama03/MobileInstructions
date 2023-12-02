@@ -2,20 +2,20 @@ import prisma from "./prisma";
 import { Prisma } from "@prisma/client";
 
 type InstructionFilters = {
-  categoryId?: number;
+  categoryIds: number[];
   deviceIds: number[];
   name?: string;
 };
 
 export const findInstructions = async ({
-  categoryId,
+  categoryIds,
   deviceIds,
   name,
 }: InstructionFilters) => {
   const instructionsWhereInput = (() => {
     const res: Prisma.InstructionWhereInput = {};
-    if (categoryId) {
-      res.category_id = categoryId;
+    if (categoryIds.length > 0) {
+      res.category_id = { in: categoryIds };
     }
     if (name) {
       res.name = {

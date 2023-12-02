@@ -2,9 +2,9 @@ import { ControllerFN } from "../types";
 import * as InstructionsService from "../services/instructions";
 
 export const getInstructions: ControllerFN = async (req, res) => {
-  const { categoryId, deviceIds, name } = req.query;
+  const { categoryIds, deviceIds, name } = req.query;
   const instructions = await InstructionsService.findInstructions({
-    categoryId: Number(categoryId),
+    categoryIds: typeof categoryIds === "string" ? categoryIds.split(",").map(Number) : [],
     deviceIds:
       typeof deviceIds === "string" ? deviceIds.split(",").map(Number) : [],
     name: typeof name === "string" ? name : undefined,
