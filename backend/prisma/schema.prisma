@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Instruction {
+  id             Int                 @id @default(autoincrement())
+  name           String
+  likes_quant    Int                 @default(0)
+  dislikes_quant Int                 @default(0)
+  category_id    Int
+  category       InstructionCategory @relation(fields: [category_id], references: [id])
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  steps          InstructionStep[]
+  devices        DeviceType[]
+}
+
+model InstructionStep {
+  id             Int         @id @default(autoincrement())
+  order          Int
+  content        String
+  instruction_id Int
+  instruction    Instruction @relation(fields: [instruction_id], references: [id])
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model InstructionCategory {
+  id           Int           @id @default(autoincrement())
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  instructions Instruction[]
+}
+
+model DeviceType {
+  id           Int           @id @default(autoincrement())
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  instructions Instruction[]
+}
