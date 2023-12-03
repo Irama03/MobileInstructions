@@ -3,8 +3,8 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Animation from '@/components/Animation'
 import dynamic from 'next/dynamic'
- 
-const VoiceRecognition = dynamic(() => import('@/components/VoiceRecognition'), { ssr: false })
+
+const VoiceRecognition = dynamic(() => import('@/components/VoiceRecognition/VoiceRecognition'), { ssr: false })
 
 const inter = Inter({ subsets: ['latin'] })
 
