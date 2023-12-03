@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const categories = [{ id: 1, name: "Загальні інструкціі" }, { id: 2, name: "Інструкціі для браузерів" }, { id: 3, name: "Налаштування" }];
+const categories = [{ id: 1, name: "Загальні інструкції" }, { id: 2, name: "Інструкції для браузерів" }, { id: 3, name: "Налаштування" }];
 
 const deviceTypes = [
   { id: 1, name: "Телефон" },
