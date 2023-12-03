@@ -1,9 +1,10 @@
-import 'regenerator-runtime/runtime';
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Animation from '@/components/Animation'
-import VoiceRecognition from "@/components/VoiceRecognition";
+import dynamic from 'next/dynamic'
+ 
+const VoiceRecognition = dynamic(() => import('@/components/VoiceRecognition'), { ssr: false })
 
 const inter = Inter({ subsets: ['latin'] })
 
