@@ -1,100 +1,37 @@
-export const instructions = [
+export const top100Films = [
+    { title: 'The Shawshank Redemption', year: 1994 },
+    { title: 'The Godfather', year: 1972 },
+    { title: 'The Godfather: Part II', year: 1974 },
+    { title: 'The Dark Knight', year: 2008 },
+    { title: '12 Angry Men', year: 1957 },
+    { title: "Schindler's List", year: 1993 },
+    { title: 'Pulp Fiction', year: 1994 },
     {
-        "id": 1,
-        "name": "Перезавантаження телефона",
-        "likes_quant": 0,
-        "dislikes_quant": 0,
-        "category_id": 1,
-        "createdAt": "2023-12-02T13:42:47.466Z",
-        "updatedAt": "2023-12-02T14:07:37.215Z",
-        "steps": [
-            {
-                "id": 1,
-                "order": 1,
-                "content": "Зажати кнопку включення",
-                "instruction_id": 1,
-                "createdAt": "2023-12-02T14:07:37.883Z",
-                "updatedAt": "2023-12-02T14:07:37.883Z"
-            },
-            {
-                "id": 2,
-                "order": 2,
-                "content": "Вибрати пункт \"Перезавантажити\"",
-                "instruction_id": 1,
-                "createdAt": "2023-12-02T14:07:37.883Z",
-                "updatedAt": "2023-12-02T14:07:37.883Z"
-            },
-            {
-                "id": 3,
-                "order": 3,
-                "content": "Натиснути кнопку \"Перезавантажити\"",
-                "instruction_id": 1,
-                "createdAt": "2023-12-02T14:07:37.883Z",
-                "updatedAt": "2023-12-02T14:07:37.883Z"
-            }
-        ],
-        "category": {
-            "id": 1,
-            "name": "Загальні інструкціі",
-            "createdAt": "2023-12-02T13:42:47.260Z",
-            "updatedAt": "2023-12-02T14:07:36.786Z"
-        },
-        "devices": [
-            {
-                "id": 1,
-                "name": "Телефон",
-                "createdAt": "2023-12-02T13:42:47.333Z",
-                "updatedAt": "2023-12-02T14:07:36.867Z"
-            }
-        ]
+      title: 'The Lord of the Rings: The Return of the King',
+      year: 2003,
+    },
+    { title: 'The Good, the Bad and the Ugly', year: 1966 },
+    { title: 'Fight Club', year: 1999 },
+    {
+      title: 'The Lord of the Rings: The Fellowship of the Ring',
+      year: 2001,
     },
     {
-        "id": 2,
-        "name": "Перезавантаження телефона",
-        "likes_quant": 0,
-        "dislikes_quant": 0,
-        "category_id": 1,
-        "createdAt": "2023-12-02T13:42:47.466Z",
-        "updatedAt": "2023-12-02T14:07:37.215Z",
-        "steps": [
-            {
-                "id": 2,
-                "order": 1,
-                "content": "Зажати кнопку включення",
-                "instruction_id": 1,
-                "createdAt": "2023-12-02T14:07:37.883Z",
-                "updatedAt": "2023-12-02T14:07:37.883Z"
-            },
-            {
-                "id": 2,
-                "order": 2,
-                "content": "Вибрати пункт \"Перезавантажити\"",
-                "instruction_id": 1,
-                "createdAt": "2023-12-02T14:07:37.883Z",
-                "updatedAt": "2023-12-02T14:07:37.883Z"
-            },
-            {
-                "id": 2,
-                "order": 3,
-                "content": "Натиснути кнопку \"Перезавантажити\"",
-                "instruction_id": 1,
-                "createdAt": "2023-12-02T14:07:37.883Z",
-                "updatedAt": "2023-12-02T14:07:37.883Z"
-            }
-        ],
-        "category": {
-            "id": 1,
-            "name": "Загальні інструкціі",
-            "createdAt": "2023-12-02T13:42:47.260Z",
-            "updatedAt": "2023-12-02T14:07:36.786Z"
-        },
-        "devices": [
-            {
-                "id": 1,
-                "name": "Телефон",
-                "createdAt": "2023-12-02T13:42:47.333Z",
-                "updatedAt": "2023-12-02T14:07:36.867Z"
-            }
-        ]
-    }
+      title: 'Star Wars: Episode V - The Empire Strikes Back',
+      year: 1980,
+    },
+    { title: 'Forrest Gump', year: 1994 },
+    { title: 'Inception', year: 2010 },
+    {
+      title: 'The Lord of the Rings: The Two Towers',
+      year: 2002,
+    },
+    { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
+    { title: 'Goodfellas', year: 1990 },
+    { title: 'The Matrix', year: 1999 },
+    { title: 'Seven Samurai', year: 1954 },
+    {
+      title: 'Star Wars: Episode IV - A New Hope',
+      year: 1977,
+    },
 ]

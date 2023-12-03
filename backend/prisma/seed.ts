@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
-const categories = [{ id: 1, name: "Загальні інструкціі" }];
+const categories = [{ id: 1, name: "Загальні інструкціі" }, { id: 2, name: "Інструкціі для браузерів" }, { id: 3, name: "Налаштування" }];
 
 const deviceTypes = [
   { id: 1, name: "Телефон" },
@@ -36,7 +36,7 @@ const instructions = [
   {
     id: 2,
     name: 'Виконання пошукового запиту в браузері "Google Chrome"',
-    category_id: 1,
+    category_id: 2,
     steps: [
       {
         content: 'Відкрити браузер "Google Chrome"',
@@ -55,6 +55,29 @@ const instructions = [
       },
     ],
     devices: [deviceTypes[0], deviceTypes[1], deviceTypes[2]],
+  },
+  {
+    id: 3,
+    name: 'Налаштування гучності',
+    category_id: 3,
+    steps: [
+      {
+        content: 'Відкрити налаштування смартфона',
+        order: 1,
+        instruction_id: 3,
+      },
+      {
+        content: 'Знайти параметр "Гучність',
+        order: 2,
+        instruction_id: 3,
+      },
+      {
+        content: 'Виставити бажану гучніть',
+        order: 3,
+        instruction_id: 3,
+      },
+    ],
+    devices: [deviceTypes[0], deviceTypes[1]],
   },
 ];
 

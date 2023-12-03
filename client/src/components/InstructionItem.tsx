@@ -3,22 +3,19 @@ import React, { FC, Fragment, useState } from 'react'
 import SendIcon from '@mui/icons-material/Send';
 import PhoneAndroidIcon from '@mui/icons-material/PhoneAndroid';
 import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
-import { instructions } from '@/app/consts';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import { purple, blue } from '@mui/material/colors';
+import { Instruction } from '@/types';
+import Link from 'next/link';
 
 type InstructionItemProps = {
-  item: typeof instructions[number]
+  item: Instruction
 }
 
 const InstructionItem: FC<InstructionItemProps> = ({item}) =>  {
-  const [open, setOpen] = useState(true);
-
-  const handleClick = () => {
-    setOpen(!open);
-  };
-  return <ListItemButton onClick={handleClick} sx={{background: blue[50]}}>
+  return <Link href={`/instruction/${item.id}`} >
+  <ListItemButton sx={{background: blue[50]}}>
       <ListItemIcon>
         <IntegrationInstructionsIcon />
       </ListItemIcon>
@@ -31,6 +28,7 @@ const InstructionItem: FC<InstructionItemProps> = ({item}) =>  {
       </List>
       </Box>
   </ListItemButton>
+  </Link>
 }
 
 export default InstructionItem;
