@@ -67,12 +67,12 @@ const instructions = [
         instruction_id: 3,
       },
       {
-        content: 'Знайти параметр "Гучність',
+        content: 'Знайти параметр "Гучність"',
         order: 2,
         instruction_id: 3,
       },
       {
-        content: 'Виставити бажану гучніть',
+        content: 'Встановити необхідну гучність',
         order: 3,
         instruction_id: 3,
       },

@@ -1,17 +1,31 @@
 'use client'
-import { Instruction } from "@/types";
-import { Box, Checkbox, Button, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from "@mui/material";
+import {Commands, Instruction, Step} from "@/types";
+import {
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Typography
+} from "@mui/material";
 import axios from "axios";
-import { FC, useEffect, useState } from "react";
-import ReplayIcon from '@mui/icons-material/Replay';
+import {FC, useContext, useEffect, useState} from "react";
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
+import {useSpeechSynthesis} from 'react-speech-kit';
 
 import styles from './page.module.css';
 import Link from "next/link";
+import {ActionContext} from "@/app/app";
 
 type InstructionPageProps = {
   params: {
@@ -20,13 +34,20 @@ type InstructionPageProps = {
 }
 
 const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
+
   const [instruction, setInstruction] = useState<Instruction>();
+  const [currentStep, setCurrentStep] = useState<Step>();
+  const [message, setMessage] = useState('');
+  const { speak, cancel, speaking } = useSpeechSynthesis();
+
   useEffect(() => {
     axios.get<Instruction>(`http://localhost:8000/instructions/${id}`)
       .then(resp => {
         setInstruction(resp.data);
+        setCurrentStep(resp.data.steps[0]);
       })
-  }, [id])
+  }, [id]);
+
   const [checked, setChecked] = useState<number[]>([]);
 
   const handleToggle = (value: number) => () => {
@@ -40,17 +61,56 @@ const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
     }
 
     setChecked(newChecked);
+    const nextStep = instruction!.steps[currentStep!.order];
+    if (nextStep) setCurrentStep(nextStep);
+    else setMessage("Інструкцію виконано!");
   };
+
   const [rateState, setRateState] = useState<'like' | 'dislike' | 'none'>('none');
+
   useEffect(() => {
     if(rateState === 'none') return;
     axios.post(`http://localhost:8000/instructions/${id}/rate`, {
-      isLiked: rateState === 'like' ? true : false
+      isLiked: rateState === 'like'
     })
     .then(resp => {
       console.log(resp);
     })
-  }, [rateState, id])
+  }, [rateState, id]);
+
+  const action = useContext(ActionContext);
+
+  const readText = (text) => {
+    speak({ text: text });
+  }
+
+  useEffect(() => {
+    if (instruction && currentStep) {
+      switch (action.command) {
+        case (Commands.START_READ_STEP || Commands.REPEAT_READ_STEP):
+          readText(currentStep!.content);
+          action.command = Commands.DO_NOTHING;
+          console.log('Start read step');
+          break;
+        case Commands.STOP_READ_STEP:
+          cancel();
+          action.command = Commands.DO_NOTHING;
+          console.log('Stop read step');
+          break;
+        case Commands.STEP_IS_DONE:
+          handleToggle(currentStep!.id);
+          action.command = Commands.DO_NOTHING;
+          console.log('Step is done: ' + currentStep!.content);
+          break;
+        case Commands.DO_NOTHING:
+          console.log('Do nothing...');
+          break;
+        default:
+          break;
+      }
+    }
+  }, [action, readText])
+
   return <main className={styles.main}>
     <Link style={{alignSelf: 'flex-start', marginBottom: 20}} href='/'>
       <Button variant="contained" startIcon={<ArrowBackIcon />}>
@@ -64,14 +124,9 @@ const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
         return (
           <ListItem
             key={id}
-            secondaryAction={
-              <IconButton edge="end" aria-label="comments">
-                <ReplayIcon />
-              </IconButton>
-            }
             disablePadding
           >
-            <ListItemButton role={undefined} onClick={handleToggle(id)} dense>
+            <ListItemButton disabled={currentStep?.id !== id} role={undefined} onClick={handleToggle(id)} dense>
               <ListItemIcon>
                 <Checkbox
                   edge="start"
@@ -81,12 +136,19 @@ const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
                   inputProps={{ 'aria-labelledby': labelId }}
                 />
               </ListItemIcon>
-              <ListItemText id={labelId} primary={content} />
+              <ListItemText id={labelId} primary={content}/>
             </ListItemButton>
+            {currentStep?.id === id ?
+                <IconButton edge="end" aria-label="comments"
+                        onClick={() => speaking ? cancel() : readText(content)}>
+                  {speaking ? <StopIcon /> : <PlayArrowIcon />}
+                </IconButton>
+                : null}
           </ListItem>
         );
       })}
     </List>
+    <Typography marginBottom="15px" variant="h5">{message}</Typography>
     <Typography>Чи була вам корисна інструкція?</Typography>
     <Box>
       <IconButton onClick={() => setRateState(rateState === 'like' ? 'none': 'like' )}>
