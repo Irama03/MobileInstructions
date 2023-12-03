@@ -23,3 +23,11 @@ export type Step = {
   order: number,
   content: string
 }
+
+export enum Commands {
+  DO_NOTHING,
+  START_READ_STEP,
+  STOP_READ_STEP,
+  REPEAT_READ_STEP,
+  STEP_IS_DONE
+}
