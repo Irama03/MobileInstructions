@@ -50,7 +50,7 @@ const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
 
   const [checked, setChecked] = useState<number[]>([]);
 
-  const handleToggle = (value: number) => () => {
+  const handleToggleHelp = (value: number) => {
     const currentIndex = checked.indexOf(value);
     const newChecked = [...checked];
 
@@ -62,8 +62,15 @@ const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
 
     setChecked(newChecked);
     const nextStep = instruction!.steps[currentStep!.order];
-    if (nextStep) setCurrentStep(nextStep);
+    if (nextStep) {
+      setCurrentStep(nextStep);
+      readText(nextStep.content);
+    }
     else setMessage("Інструкцію виконано!");
+  };
+
+  const handleToggle = (value: number) => () => {
+    handleToggleHelp(value);
   };
 
   const [rateState, setRateState] = useState<'like' | 'dislike' | 'none'>('none');
@@ -78,7 +85,7 @@ const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
     })
   }, [rateState, id]);
 
-  const action = useContext(ActionContext);
+  const {action, setAction} = useContext(ActionContext);
 
   const readText = (text) => {
     speak({ text: text });
@@ -87,19 +94,24 @@ const InstructionPage: FC<InstructionPageProps> = ({ params: { id } }) => {
   useEffect(() => {
     if (instruction && currentStep) {
       switch (action.command) {
-        case (Commands.START_READ_STEP || Commands.REPEAT_READ_STEP):
+        case Commands.START_READ_STEP:
           readText(currentStep!.content);
-          action.command = Commands.DO_NOTHING;
+          setAction({command: Commands.DO_NOTHING});
           console.log('Start read step');
           break;
         case Commands.STOP_READ_STEP:
           cancel();
-          action.command = Commands.DO_NOTHING;
+          setAction({command: Commands.DO_NOTHING});
           console.log('Stop read step');
           break;
+        case Commands.REPEAT_READ_STEP:
+          readText(currentStep!.content);
+          setAction({command: Commands.DO_NOTHING});
+          console.log('Repeat read step');
+          break;
         case Commands.STEP_IS_DONE:
-          handleToggle(currentStep!.id);
-          action.command = Commands.DO_NOTHING;
+          handleToggleHelp(currentStep!.id);
+          setAction({command: Commands.DO_NOTHING});
           console.log('Step is done: ' + currentStep!.content);
           break;
         case Commands.DO_NOTHING:

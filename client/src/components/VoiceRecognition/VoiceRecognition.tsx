@@ -5,22 +5,23 @@ import Mic from "@mui/icons-material/Mic";
 import MicNone from "@mui/icons-material/MicNone";
 import {IconButton} from "@mui/material";
 import './VoiceRecognition.css';
-import {useContext, useState} from "react";
+import {useContext, useEffect} from "react";
 import {Commands} from "@/types";
 import {ActionContext} from "@/app/app";
 
 const VoiceRecognition = () => {
 
-    const action = useContext(ActionContext);
+    const {setAction} = useContext(ActionContext);
 
     const processCommand = (command) => {
         console.log(`Ви дали команду: "${command}"`);
-        action.command = command;
+        setAction({command: command});
+        resetTranscript();
     }
 
     const commands = [
         {
-            command: ['Починай', 'Почни', 'Розпочинай', 'Розпочни', 'Читай'],
+            command: ['Старт', 'Починай', 'Почни', 'Розпочинай', 'Розпочни', 'Читай'],
             callback: () => processCommand(Commands.START_READ_STEP),
             matchInterim: true
         },
@@ -45,8 +46,15 @@ const VoiceRecognition = () => {
     const {
         transcript,
         listening,
-        browserSupportsSpeechRecognition
+        browserSupportsSpeechRecognition,
+        resetTranscript
     } = useSpeechRecognition({ commands });
+
+    useEffect(() => {
+        if (transcript !== '') {
+            console.log(transcript)
+        }
+    }, [transcript]);
 
     if (!browserSupportsSpeechRecognition) {
         return <span>Ваш браузер не підтримує розпізнавання голосу</span>;
@@ -64,7 +72,6 @@ const VoiceRecognition = () => {
             <IconButton onClick={() => listening ? SpeechRecognition.stopListening() : startListeningUkr()}>
                 {listening ? <Mic fontSize="large" /> : <MicNone fontSize="large" />}
             </IconButton>
-            <p>{transcript}</p>
         </div>
     );
 }

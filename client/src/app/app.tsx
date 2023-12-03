@@ -1,20 +1,18 @@
 'use client'
 import {Commands} from "@/types";
-import React, {createContext} from "react";
+import React, {createContext, useState} from "react";
 import Animation from "@/components/Animation";
 import VoiceRecognition from "@/components/VoiceRecognition/VoiceRecognition";
 
-const action = {
-    command: Commands.DO_NOTHING
-};
-
-export const ActionContext = createContext(action);
+export const ActionContext = createContext<any>(null);
 
 const App = ({children}: {
     children: React.ReactNode
 }) => {
+    const [action, setAction] = useState({command: Commands.DO_NOTHING});
+
     return (
-        <ActionContext.Provider value={action}>
+        <ActionContext.Provider value={{action, setAction}}>
             {children}
             <VoiceRecognition />
             <Animation />
