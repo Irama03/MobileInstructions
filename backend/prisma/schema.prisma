@@ -28,7 +28,7 @@ model InstructionStep {
   order          Int
   content        String
   instruction_id Int
-  instruction    Instruction @relation(fields: [instruction_id], references: [id])
+  instruction    Instruction @relation(fields: [instruction_id], references: [id], onDelete: Cascade)
   createdAt      DateTime    @default(now())
   updatedAt      DateTime    @updatedAt
 }
