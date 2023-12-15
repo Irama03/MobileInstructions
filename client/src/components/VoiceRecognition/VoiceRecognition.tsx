@@ -11,11 +11,12 @@ import {ActionContext} from "@/app/app";
 
 const VoiceRecognition = () => {
 
-    const {setAction} = useContext(ActionContext);
+    const {action, setAction} = useContext(ActionContext);
 
-    const processCommand = (command) => {
-        console.log(`Ви дали команду: "${command}"`);
-        setAction({command: command});
+    const processCommand = (command, argument = null) => {
+        console.log(`Ви дали команду: "${command}"` +
+            (argument ? ' з аргументом - ' + argument : ''));
+        setAction({command, argument});
         resetTranscript();
     }
 
@@ -41,6 +42,62 @@ const VoiceRecognition = () => {
             callback: () => processCommand(Commands.STEP_IS_DONE),
             matchInterim: true
         },
+        {
+            command: ['Очистити фільтр', 'Очистити фільтри', 'Очистити фільтрацію'],
+            callback: () => processCommand(Commands.CLEAR_FILTER),
+            matchInterim: true
+        },
+        {
+            command: ['Фільтрація за :criterion', 'Фільтр за :criterion'],
+            callback: (criterion) => processCommand(Commands.FILTER, criterion),
+            matchInterim: true
+        },
+        {
+            command: ['Фільтрація.', 'Фільтр.', /*'Фільтрація *', 'Фільтр *'*/],
+            callback: () => processCommand(Commands.FILTER, ''),
+            matchInterim: true
+        },
+        {
+            command: 'За девайсом',
+            callback: () => {
+                if (action.command === Commands.WAIT_FOR_FILTER_TYPE_REPLAY)
+                    processCommand(Commands.FILTER, 'девайсом')
+                else console.log('Ignoring за девайсом. Команда: ' + action.command);
+            },
+            matchInterim: true
+        },
+        {
+            command: 'За категорією',
+            callback: () => {
+                if (action.command === Commands.WAIT_FOR_FILTER_TYPE_REPLAY)
+                    processCommand(Commands.FILTER, 'категорією')
+                else console.log('Ignoring за категорією. Команда: ' + action.command);
+            },
+            matchInterim: true
+        },
+        {
+            command: 'Девайс *',
+            callback: (device) => {
+                if (action.command === Commands.WAIT_FOR_FILTER_BY_DEVICE_REPLAY)
+                    processCommand(Commands.FILTER_BY_PARTICULAR_DEVICE, device)
+                else console.log('Ignoring девайс ' + device + '. Команда: ' + action.command);
+            },
+            matchInterim: true
+        },
+        {
+            command: 'Категорія *',
+            callback: (category) => {
+                if (action.command === Commands.WAIT_FOR_FILTER_BY_CATEGORY_REPLAY)
+                    processCommand(Commands.FILTER_BY_PARTICULAR_CATEGORY, category)
+                else console.log('Ignoring категорія ' + category + '. Команда: ' + action.command);
+            },
+            matchInterim: true
+        },
+        {
+            command: ['Перейти на *', 'Перейди на *', 'Відкрити *', 'Відкрий *'],
+            callback: (instruction) => processCommand(Commands.GO_TO_INSTRUCTION, instruction),
+            matchInterim: true
+        }
     ]
 
     const {
