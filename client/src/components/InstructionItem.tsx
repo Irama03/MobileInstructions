@@ -20,7 +20,7 @@ const InstructionItem: FC<InstructionItemProps> = ({item}) =>  {
         <IntegrationInstructionsIcon />
       </ListItemIcon>
       <Box>
-      <ListItemText primary={item.name} secondary={item.category.name}/>
+      <ListItemText primary={item.id + '. ' + item.name} secondary={item.category.name}/>
       <List component="div" disablePadding>
         {item.devices.map(device => <ListItem key={device.id}>
           <ListItemText secondary={device.name} />

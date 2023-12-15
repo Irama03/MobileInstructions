@@ -9,7 +9,10 @@ export const ActionContext = createContext<any>(null);
 const App = ({children}: {
     children: React.ReactNode
 }) => {
-    const [action, setAction] = useState({command: Commands.DO_NOTHING});
+    const [action, setAction] = useState({
+        command: Commands.DO_NOTHING,
+        argument: null
+    });
 
     return (
         <ActionContext.Provider value={{action, setAction}}>
