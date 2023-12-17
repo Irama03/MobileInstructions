@@ -13,17 +13,17 @@ const VoiceRecognition = () => {
 
     const {action, setAction} = useContext(ActionContext);
 
-    const processCommand = (command, argument = null) => {
+    const processCommand = (command, argument = null, state = null) => {
         console.log(`Ви дали команду: "${command}"` +
             (argument ? ' з аргументом - ' + argument : ''));
-        setAction(prev => ({ ...prev, command, argument}));
+        setAction(prev => ({ command, argument, characterState: state ? state : prev.characterState}));
         resetTranscript();
     }
 
     const commands = [
         {
             command: ['Старт', 'Починай', 'Почни', 'Розпочинай', 'Розпочни', 'Читай'],
-            callback: () => processCommand(Commands.START_READ_STEP),
+            callback: () => processCommand(Commands.START_READ_STEP, null, 'Explain'),
             matchInterim: true
         },
         {
@@ -33,7 +33,7 @@ const VoiceRecognition = () => {
         },
         {
             command: ['Повтори', 'Повтор', 'Ще раз'],
-            callback: () => processCommand(Commands.REPEAT_READ_STEP),
+            callback: () => processCommand(Commands.REPEAT_READ_STEP, null, 'Explain'),
             matchInterim: true
         },
         {

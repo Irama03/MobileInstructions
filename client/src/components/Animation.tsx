@@ -13,7 +13,10 @@ const Model = () => {
     console.log(action.characterState)
     console.log(actions[action.characterState])
     console.log(animations)
-    actions[names[3]]?.play();
+    actions['Hello']?.stop();
+    actions['Explain']?.stop();
+    actions['Listen']?.stop()
+    actions[action.characterState]?.play();
   }, [actions, names, action]);
   
   return  <group scale={[2, 2, 2]}>
