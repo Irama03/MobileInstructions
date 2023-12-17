@@ -16,7 +16,7 @@ const VoiceRecognition = () => {
     const processCommand = (command, argument = null) => {
         console.log(`Ви дали команду: "${command}"` +
             (argument ? ' з аргументом - ' + argument : ''));
-        setAction({command, argument});
+        setAction(prev => ({ ...prev, command, argument}));
         resetTranscript();
     }
 
@@ -106,6 +106,10 @@ const VoiceRecognition = () => {
         browserSupportsSpeechRecognition,
         resetTranscript
     } = useSpeechRecognition({ commands });
+    
+    useEffect(() => {
+            setAction(prev => ({...prev, characterState: listening ? 'Listen' : 'Hello'}));
+    }, [listening])
 
     useEffect(() => {
         if (transcript !== '') {

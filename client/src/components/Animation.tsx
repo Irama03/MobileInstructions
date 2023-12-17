@@ -1,14 +1,20 @@
 'use client'
-import React, { Suspense, useEffect } from 'react';
+import React, { Suspense, useContext, useEffect } from 'react';
 import { Canvas } from 'react-three-fiber';
 import { Environment, OrbitControls, PerspectiveCamera, Stats, useAnimations, useGLTF } from '@react-three/drei';
+import { ActionContext } from '@/app/app';
 
 const Model = () => {
   const {animations, scene} = useGLTF('/final.glb');
   const { actions, names } = useAnimations(animations, scene);
+  const {action, setAction} = useContext(ActionContext);
   useEffect(() => {
+    console.log(names, actions)
+    console.log(action.characterState)
+    console.log(actions[action.characterState])
+    console.log(animations)
     actions[names[3]]?.play();
-  }, [actions, names]);
+  }, [actions, names, action]);
   
   return  <group scale={[2, 2, 2]}>
     <primitive object={scene} />

@@ -15,6 +15,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import styles from './page.module.css';
+import { useRouter } from 'next/navigation';
 
 function Copyright(props: any) {
   return (
@@ -32,6 +33,7 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 
 export default function SignIn() {
+  const router = useRouter()
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,6 +41,7 @@ export default function SignIn() {
       email: data.get('email'),
       password: data.get('password'),
     });
+    router.push('/admin')
   };
 
   return (
@@ -91,7 +94,7 @@ export default function SignIn() {
             </Button>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
       </Container>
   );
 }
